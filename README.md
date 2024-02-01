@@ -7,4 +7,4 @@ Maybe I'll do another one with AoC23
 
 ## to-Do
 
-- [] Finish setting up Rust on Neovim [TJ Video](https://www.youtube.com/watch?v=Mccy6wuq3JE)
+- [ ] Finish setting up Rust on Neovim [TJ Video](https://www.youtube.com/watch?v=Mccy6wuq3JE)
