@@ -8,17 +8,17 @@
 */
 
 fn max_calories(input: String, choice: String) -> u32 {
-    let mut top_maxes: Vec<u32> = Vec::new();
+    let mut max_vec: Vec<u32> = Vec::new();
     let mut curr_max: u32 = 0;
 
     for line in input.lines() {
         if line.trim().is_empty() {
-            top_maxes.push(curr_max);
-            top_maxes.sort_by(|a, b| b.cmp(a)); // sorting in descending order
+            max_vec.push(curr_max);
+            max_vec.sort_by(|a, b| b.cmp(a)); // sorting in descending order
             if choice == "Part One" {
-                top_maxes.truncate(1);
+                max_vec.truncate(1);
             } else if choice == "Part Two" {
-                top_maxes.truncate(3);
+                max_vec.truncate(3);
             }
             curr_max = 0;
         } else {
@@ -28,7 +28,7 @@ fn max_calories(input: String, choice: String) -> u32 {
             }
         }
     }
-    return top_maxes.iter().sum();
+    return max_vec.iter().sum();
 }
 
 pub fn solution(input: String) {
