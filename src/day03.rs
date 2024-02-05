@@ -11,7 +11,7 @@
  * in both compartments of each rucksack.
  */
 
-use std::vec;
+use std::collections::HashSet;
 
 fn char_to_int(c: char) -> Option<u32> {
     match c {
@@ -27,17 +27,15 @@ fn sum_priorities(rucksack: String) -> u32 {
     }
     let mut sum = 0;
     let (compartment_one, compartment_two) = rucksack.split_at(rucksack.len() / 2);
-    let mut chars_in_common: Vec<char> = vec![];
+    let mut chars_in_common = HashSet::new();
+
     for char_in_c1 in compartment_one.chars() {
-        if compartment_two.contains(char_in_c1) && !chars_in_common.contains(&char_in_c1) {
-            chars_in_common.push(char_in_c1);
+        if compartment_two.contains(char_in_c1) && chars_in_common.insert(char_in_c1) {
+            sum += char_to_int(char_in_c1).unwrap_or_else(|| {
+                println!("Invalid character: {}", char_in_c1);
+                0
+            });
         }
-    }
-    for c in chars_in_common {
-        sum += char_to_int(c).unwrap_or_else(|| {
-            println!("Invalid charachter: {}", c);
-            0
-        });
     }
     return sum;
 }
