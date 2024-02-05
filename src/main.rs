@@ -1,5 +1,6 @@
 mod day01;
 mod day02;
+mod day03;
 
 use dotenv::dotenv;
 use reqwest;
@@ -25,6 +26,7 @@ async fn process_solution(day: u32) {
     let solutions: Vec<SolutionFunction> = vec![
         day01::solution,
         day02::solution,
+        day03::solution,
     ];
 
    match solutions.get(day as usize - 1) {
