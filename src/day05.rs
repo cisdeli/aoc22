@@ -5,6 +5,9 @@
  */
 
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::BufReader;
+use std::io::Read;
 
 fn parse_input(input: String) -> (HashMap<char, i32>, Vec<(char, i32, i32)>) {
     let mut crates: HashMap<char, i32> = HashMap::new();
@@ -42,34 +45,24 @@ fn parse_input(input: String) -> (HashMap<char, i32>, Vec<(char, i32, i32)>) {
     return (crates, moves);
 }
 
-fn solve(input: String) {
-    let (mut crates, moves) = parse_input(input);
-    let mut stacks: HashMap<i32, Vec<char>> = HashMap::new();
+pub fn solution(_input: String) {
+    let file = File::options().read(true).open("src/input.txt");
 
-    // Initialize the stacks with the initial positions of the crates
-    for (&c, &position) in &crates {
-        stacks.entry(position).or_insert_with(Vec::new).push(c);
-    }
-
-    for (c, from, to) in moves {
-        if let Some(position) = crates.get_mut(&c) {
-            if *position == from {
-                *position = to;
-                // Remove the crate from the old position and add it to the new position
-                stacks.get_mut(&from).unwrap().retain(|&x| x != c);
-                stacks.entry(to).or_insert_with(Vec::new).push(c);
-            }
+    match file {
+        Ok(file) => {
+            let mut buff_reader = BufReader::new(file);
+            let mut input = String::new();
+            let _ = buff_reader.read_to_string(&mut input);
+            println!("{}", input);
+            
+            // let (crates, moves) = parse_input(input);
+            // println!("{:?}", crates);
+            // println!("{:?}", moves);
+        },
+        Err(error) => {
+            println!("Error: {}", error);
         }
     }
 
-    // Print the crate at the top of each stack
-    for (position, stack) in &stacks {
-        if let Some(c) = stack.last() {
-            println!("Position {}: Crate {}", position, c);
-        }
-    }
-}
-
-pub fn solution(input: String) {
-    solve(input);
+    // parse_input();
 }
