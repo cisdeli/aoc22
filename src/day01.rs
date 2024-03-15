@@ -2,7 +2,7 @@
  * CALORIE COUNTING
  * Input: amount of calories each elf is carrying.
  *  - Each line represents one item
- *  - Balnk line separetes the invetory of each elf
+ *  - Blank line separates the inventory of each elf
  * Output 1: max quantity of calories that an elf in carrying
  * Output 2: sum of the top 3 elves carrying the max quantity of calories
 */
@@ -28,7 +28,7 @@ fn max_calories(input: String, choice: String) -> u32 {
             }
         }
     }
-    return max_vec.iter().sum();
+    max_vec.iter().sum()
 }
 
 pub fn solution(input: String) {

@@ -22,9 +22,10 @@ async fn get_input(day: u32) -> Result<String, Box<dyn Error>> {
     return Ok(input.trim().to_string());
 }
 
-// I still don't understand everything from this function but oh well
+// Function to process the solution for a given day
 type SolutionFunction = fn(String);
 async fn process_solution(day: u32) {
+    // Variable to store the solutions for each day
     let solutions: Vec<SolutionFunction> = vec![
         day01::solution,
         day02::solution,
@@ -33,18 +34,19 @@ async fn process_solution(day: u32) {
         day05::solution,
     ];
 
-   match solutions.get(day as usize - 1) {
-       Some(solution) => {
-           let input = get_input(day)
-               .await
-               .expect(&format!("Error fetching input for day {}", day)); // the & is used for
-                                                                          // string concatenation
-           solution(input);
-       }
-       None => {
-           println!("Invalid day specified");
-       }
-   }
+    // Get the solution for the given day
+    match solutions.get(day as usize - 1) {
+        Some(solution) => {
+            let input = get_input(day)
+                .await
+                .expect(&format!("Error fetching input for day {}", day)); // the & is used for
+                                                                           // string concatenation
+            solution(input);
+        }
+        None => {
+            println!("Invalid day specified");
+        }
+    }
 }
 
 #[tokio::main]

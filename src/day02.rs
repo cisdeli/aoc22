@@ -42,7 +42,9 @@ struct Game {
     second_pt2: Result,
 }
 
+// Game logic
 impl Game {
+    // Constructor
     fn new(first_col: char, second_col: char, second_col_pt2: char) -> Option<Self> {
         let first = match first_col {
             'A' => Some(Play::Rock),
@@ -128,7 +130,7 @@ impl Game {
             Result::Win => 6,
         };
 
-        return (score, score2);
+        (score, score2)
     }
 }
 
