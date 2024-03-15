@@ -3,9 +3,6 @@
  */
 
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::BufReader;
-use std::io::Read;
 
 fn fill_empty_crates(lines: Vec<&str>, max_height: usize) -> String {
     let mut crates_str = String::new();
@@ -55,13 +52,10 @@ fn parse_input(input: String) -> (HashMap<i32, Vec<char>>, Vec<(i32, i32, i32)>)
         let to = parts[5].parse::<i32>().unwrap();
         moves.push((crate_num, from, to));
     }
-
-    println!("crates: {:?}", crates);
-    println!("moves: {:?}", moves);
     (crates, moves)
 }
 
-fn solve(mut crates: HashMap<i32, Vec<char>>, moves: Vec<(i32, i32, i32)>) {
+fn solve(mut crates: HashMap<i32, Vec<char>>, moves: Vec<(i32, i32, i32)>, part: i32) {
     for (_, vec) in crates.iter_mut() {
         vec.reverse();
     }
@@ -71,16 +65,16 @@ fn solve(mut crates: HashMap<i32, Vec<char>>, moves: Vec<(i32, i32, i32)>) {
         let to = mv.2;
 
         let from_stack = crates.get_mut(&from).unwrap();
-
         let mut crates_aux = Vec::new();
         for _ in 0..crate_qtt {
             if let Some(c) = from_stack.pop() {
                 crates_aux.push(c);
             }
         }
+        if part == 2 {
+            crates_aux.reverse();
+        }
         crates.get_mut(&to).unwrap().extend(crates_aux);
-        println!("moved");
-        println!("{:?}", crates);
     }
 
     let mut sorted_crates: Vec<_> = crates.into_iter().collect();
@@ -94,24 +88,7 @@ fn solve(mut crates: HashMap<i32, Vec<char>>, moves: Vec<(i32, i32, i32)>) {
     }
 }
 
-pub fn solution(_input: String) {
-    let file = File::options().read(true).open("src/input.txt");
-    
-    match file {
-        Ok(file) => {
-            let mut buff_reader = BufReader::new(file);
-            let mut input = String::new();
-            let _ = buff_reader.read_to_string(&mut input);
-            println!("{}", input);
-    
-            let (crates, moves) = parse_input(input);
-            solve(crates, moves);
-        }
-        Err(error) => {
-            println!("Error: {}", error);
-        }
-    }
-
-    // let (crates, moves) = parse_input(input);
-    // solve(crates, moves);
+pub fn solution(input: String) {
+    let (crates, moves) = parse_input(input);
+    solve(crates, moves, 2);
 }
