@@ -22,8 +22,7 @@ Maybe I'll do another one with AoC23
 
 #### Discussion
 
-Surprisingly, my initial solution wasn't the worst performing one. I  
-expected to be slower then the bites approach but I was proved wrong.
+Surprisingly, my initial solution wasn't the worst performing one. I expected to be slower then the bites approach but I was proved wrong.
 The sliding window outperformed the other solutions by far, since it's O(1)
 while the others are O(n * m) where m = message size.
 
