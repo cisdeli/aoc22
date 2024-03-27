@@ -4,6 +4,7 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
+mod day07;
 
 use dotenv::dotenv;
 use reqwest;
@@ -34,6 +35,7 @@ async fn process_solution(day: u32) {
         day04::solution,
         day05::solution,
         day06::solution,
+        day07::solution,
     ];
 
     // Get the solution for the given day
