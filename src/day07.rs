@@ -4,12 +4,8 @@
 
 use petgraph::{
     graph::Graph,
-    visit::{Bfs, EdgeRef},
+    visit::{Bfs},
     EdgeDirection,
-};
-use std::{
-    fs::File,
-    io::{BufReader, Read},
 };
 
 #[derive(Debug)]
@@ -96,41 +92,72 @@ fn parse_commands(input: String) -> Graph<Node, usize> {
             }
             file_graph
         });
-    return file_graph
+    return file_graph;
 }
 
-pub fn solution(input: String) {
-    let file = File::options().read(true).open("src/input.txt");
-    match file {
-        Ok(file) => {
-            let mut buff_reader = BufReader::new(file);
-            let mut _input = String::new();
-            let _ = buff_reader.read_to_string(&mut _input);
+fn part1(input: String) {
+    let file_graph = parse_commands(input);
+    const MAX_FOLDER_SIZE: usize = 100000;
+    let mut bfs = Bfs::new(
+        &file_graph,
+        file_graph
+            .node_indices()
+            .nth(0)
+            .expect("No 0th index in file_graph"),
+    );
 
-            let file_graph = parse_commands(input);
-            const MAX_FOLDER_SIZE: usize = 100000;
-            let mut bfs = Bfs::new(
-                &file_graph,
+    let mut result: usize = 0;
+    while let Some(visited) = bfs.next(&file_graph) {
+        let entity = file_graph
+            .node_weight(visited)
+            .expect("Found node index with no weight");
+
+        if entity.is_folder && entity.size <= MAX_FOLDER_SIZE {
+            result += entity.size;
+        }
+    }
+    println!("Result: {}", result);
+}
+
+fn part2(input: String) {
+    let file_graph = parse_commands(input);
+    const TOTAL_DISK_SPACE: usize = 70000000;
+    const REQUIRED_SPACE: usize = 30000000;
+    let available_space = TOTAL_DISK_SPACE
+        - file_graph
+            .node_weight(
                 file_graph
                     .node_indices()
                     .nth(0)
                     .expect("No 0th index in file_graph"),
-            );
+            )
+            .expect("Couldn't find first node")
+            .size;
+    let minimum_size_to_delete = REQUIRED_SPACE - available_space;
 
-            let mut result: usize = 0;
-            while let Some(visited) = bfs.next(&file_graph) {
-                let entity = file_graph
-                    .node_weight(visited)
-                    .expect("Found node index with no weight");
+    let mut bfs = Bfs::new(
+        &file_graph,
+        file_graph
+            .node_indices()
+            .nth(0)
+            .expect("No 0th index in file_graph"),
+    );
 
-                if entity.is_folder && entity.size <= MAX_FOLDER_SIZE {
-                    result += entity.size;
-                }
-            }
-            println!("Result: {}", result);
-        }
-        Err(error) => {
-            println!("Error: {}", error);
+    let mut result: usize = TOTAL_DISK_SPACE;
+    while let Some(visited) = bfs.next(&file_graph) {
+        let entity = file_graph
+            .node_weight(visited)
+            .expect("Found node index with no weight");
+
+        if entity.is_folder && entity.size >= minimum_size_to_delete && entity.size < result {
+            result = entity.size
         }
     }
+
+    println!("Result: {}", result);
+}
+
+pub fn solution(input: String) {
+    part1(input.clone());
+    part2(input.clone());
 }
